@@ -2,6 +2,8 @@ require_relative "../config/environment.rb"
 
 class Student
 
+  namespace :db do 
+
   # Remember, you can access your database connection anywhere in this class
   #  with DB[:conn]  
   
@@ -26,6 +28,9 @@ class Student
     DB[:conn].execute(sql) 
   end
 
+ 
+
+
   def self.drop_table
     sql = "DROP TABLE IF EXISTS students"
     DB[:conn].execute(sql) 
@@ -49,6 +54,12 @@ class Student
   def self.all
     sql = "SELECT * FROM students" 
     DB[:conn].execute(sql)
+  end
+
+  desc 'migrate changes to your database'
+    task :migrate => :environment do
+      Student.create_table
+    end
   end
 
 end
